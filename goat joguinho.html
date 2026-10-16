@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>O FENÔMENO — Simulador de Carreira</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--sf:#161616;--sf2:#202020;--tx:#f4f4f4;--mu:#8e8e8e;--rd:#e11d2e;--rd2:#ff4d5a;--ln:#2b2b2b;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 15px/1.45 Inter,system-ui,sans-serif}
+.bn,h1,h2,.ovr,.reel{font-family:'Bebas Neue',Impact,sans-serif;font-weight:400;letter-spacing:.02em}
+.tk{overflow:hidden;white-space:nowrap;background:var(--rd);color:#fff;font-weight:600;font-size:12px;padding:6px 0}
+.tk div{display:inline-block;animation:mq 40s linear infinite}
+.tk span{margin:0 22px}
+@keyframes mq{to{transform:translateX(-50%)}}
+main{max-width:720px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:clamp(48px,13vw,88px);line-height:.92;margin:24px 0 10px}
+h1 em{font-style:normal;color:var(--rd)}
+h2{font-size:28px;margin:28px 0 10px}
+p.lead{color:var(--mu);max-width:46ch;margin:0 0 20px}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pg button,.ag button,.bt,.sg button{font:inherit;color:var(--tx);cursor:pointer}
+.pg button{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px 6px;text-align:center}
+.pg b{display:block;font:400 26px 'Bebas Neue',Impact,sans-serif}
+.pg small{color:var(--mu)}
+.pg button.on,.sg button.on{border-color:var(--rd);background:#2a0a0d}
+.sg{display:flex;gap:8px;margin:14px 0}
+.sg button{flex:1;background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:10px}
+.sg small{display:block;color:var(--mu)}
+.bt{background:var(--rd);border:0;border-radius:12px;padding:15px 22px;font:400 26px 'Bebas Neue',Impact,sans-serif;letter-spacing:.05em;width:100%;margin-top:6px}
+.bt:hover{background:var(--rd2)}
+.bt.g{background:var(--sf2);border:1px solid var(--ln)}
+button:focus-visible{outline:2px solid var(--rd2);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800;color:var(--mu);margin-top:8px}
+.top b{color:var(--rd2);font:400 32px 'Bebas Neue',Impact,sans-serif}
+.reel{font-size:clamp(40px,11vw,72px);line-height:1;margin:18px 0 4px;color:var(--tx)}
+.reel.r{color:var(--rd2)}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.ag button{background:var(--sf);border:1px solid var(--ln);border-radius:12px;padding:12px;text-align:left;display:flex;justify-content:space-between;align-items:center}
+.ag button:not(:disabled):hover{border-color:var(--rd)}
+.ag button:disabled{opacity:.9;cursor:default}
+.ag button.f{border-color:var(--rd);background:#2a0a0d}
+.ag b{font-size:12px;color:var(--mu);font-weight:600}
+.ag span{font:400 30px 'Bebas Neue',Impact,sans-serif;color:var(--tx)}
+.ag .f span{color:var(--rd2)}
+.tw{overflow-x:auto;border:1px solid var(--ln);border-radius:12px;margin-top:12px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+th,td{padding:7px 8px;text-align:center;border-bottom:1px solid var(--ln)}
+th{color:var(--mu);font-weight:600;background:var(--sf)}
+td:nth-child(2),td:last-child{text-align:left}
+tr.r{opacity:0;animation:in .25s forwards;animation-delay:calc(var(--i)*85ms)}
+tr.t td{background:#1d0b0d}
+@keyframes in{to{opacity:1}}
+.card{margin:26px auto 0;max-width:340px;border-radius:22px;padding:22px 22px 18px;background:linear-gradient(160deg,#ff4d5a 0%,#b3101d 45%,#2a0306 100%);box-shadow:0 14px 40px #e11d2e40;opacity:0;animation:in .6s forwards}
+.card .ovr{font-size:78px;line-height:.9}
+.card .ps{font:400 26px 'Bebas Neue',Impact,sans-serif;opacity:.9}
+.card .nm{font:400 30px 'Bebas Neue',Impact,sans-serif;margin:8px 0 10px;border-bottom:1px solid #fff5;padding-bottom:8px}
+.cs{display:grid;grid-template-columns:1fr 1fr;gap:2px 22px;font-weight:800}
+.cs div{display:flex;justify-content:space-between}
+.cs span{font-weight:400;opacity:.85}
+.tr{display:flex;justify-content:space-between;margin-top:12px;text-align:center;font-size:11px}
+.tr b{display:block;font:400 28px 'Bebas Neue',Impact,sans-serif}
+.tier{text-align:center;margin:22px 0 6px}
+.tier .bn{font-size:40px;color:var(--rd2)}
+.tier small{display:block;color:var(--mu)}
+.lad{display:flex;gap:4px;margin:12px 0}
+.lad i{flex:1;height:8px;border-radius:4px;background:var(--sf2)}
+.lad i.on{background:var(--rd)}
+.bs li{margin:4px 0;color:var(--mu)}
+.bs b{color:var(--tx)}
+.nm2{display:flex;gap:8px}.nm2 input{font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px;min-width:0}.nm2 input:first-child{flex:1}.nm2 input:last-child{width:84px}
+.gl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border:3px solid var(--tx);border-bottom:0;padding:34px 8px 8px;margin:16px 0;border-radius:6px 6px 0 0}
+.gl button,.of button{font:inherit;color:var(--tx);cursor:pointer;background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:26px 6px;font-weight:800}
+.gl button:hover,.of button:hover{border-color:var(--rd);background:#2a0a0d}
+.of{display:grid;gap:8px}.of button{display:flex;justify-content:space-between;padding:16px;text-align:left}.of span{color:var(--mu);font-weight:400}
+.ev{background:#2a0a0d;border-left:3px solid var(--rd);padding:10px 12px;border-radius:6px}
+.stt{color:var(--rd2);letter-spacing:2px;font-size:18px}.card .stt{color:#fff;font-size:15px}.tier .stt{font-size:22px}
+.tr{gap:6px}
+select.nt{width:100%;margin-top:8px;font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:12px}
+#rs{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:5;font:600 12px Inter,sans-serif;color:var(--tx);background:var(--sf2);border:1px solid var(--ln);border-radius:20px;padding:8px 12px;cursor:pointer}
+.reel.r{color:var(--mu)}.reel.pr{color:#ff2d3d}
+.pm{display:inline-block;background:var(--rd);color:#fff;font:800 12px Inter,sans-serif;letter-spacing:.14em;padding:4px 9px;border-radius:6px;vertical-align:middle;margin-left:10px}
+main.w{max-width:1120px}
+.hud{display:grid;grid-template-columns:240px 210px 1fr;gap:14px;align-items:start}
+.cd{background:#000;border:1px solid #242424;border-radius:16px;padding:14px}.sm{color:var(--mu);font-size:12px}.ac{color:var(--rd2)}
+.lc h3{font:400 15px 'Bebas Neue',Impact,sans-serif;letter-spacing:.1em;color:var(--rd2);margin:0 0 8px}
+.tr2{display:flex;align-items:center;gap:7px;padding:4px 6px;border-radius:6px;font-size:12px}.tr2 span{width:16px;color:var(--mu);text-align:right}
+.tr2 b{flex:1;text-transform:uppercase;font:400 14px 'Bebas Neue',Impact,sans-serif;letter-spacing:.03em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tr2 em{font-style:normal;font-weight:800}
+.tr2.me{background:#2a0a0d;color:var(--rd2)}.tr2.rl{border-left:2px solid #7a1d1d}
+.ph{display:flex;gap:10px;align-items:center;margin-bottom:10px}.ph b{font:400 22px 'Bebas Neue',Impact,sans-serif}
+.pr2{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #222;padding-bottom:10px;margin-bottom:8px}.pr2 strong{font:400 34px 'Bebas Neue',Impact,sans-serif}
+.ring{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--rd) var(--p),#2a2a2a 0)}
+.ring span{width:62px;height:62px;border-radius:50%;background:#000;display:grid;place-items:center;font:400 36px 'Bebas Neue',Impact,sans-serif}
+.kv{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px}.kv span{color:var(--mu)}.kv b{font-weight:800}
+.rt{display:flex;justify-content:space-between;color:var(--mu);font-weight:600;font-size:13px;letter-spacing:.08em;margin-bottom:10px}.rt b{color:var(--tx)}.rt b.ac{color:var(--rd2)}
+.rw{display:flex;gap:12px;align-items:flex-start}.tl{width:112px;flex:none;max-height:440px;overflow:auto;display:grid;gap:6px}
+.ch{display:flex;align-items:center;gap:5px;background:#000;border:1px solid #242424;border-radius:8px;padding:6px 7px;font-size:11px}.ch b{font:400 17px 'Bebas Neue',Impact,sans-serif}
+.ch.tt b,.ch i{color:#22c55e}.ch i{font-style:normal;font-size:9px;margin-left:auto}.ch span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:44px;color:var(--mu)}.ch.cur{border-color:var(--rd)}
+.wp{flex:1;min-width:0;background:#000;border:1px solid #1d3a2a;border-radius:16px;padding:18px}.wp h2{font-size:30px;margin:10px 0 4px}
+.pill{font-size:10px;font-weight:800;letter-spacing:.08em;color:#22c55e;border:1px solid #1d5a3a;border-radius:6px;padding:3px 8px}
+.of2{display:flex;align-items:center;gap:12px;width:100%;background:#080808;border:1px solid #242424;border-radius:12px;padding:14px;margin-top:10px;color:var(--tx);font:inherit;text-align:left;cursor:pointer}
+.of2:hover{border-color:var(--rd)}.of2 div:nth-child(3){flex:1}.of2 b{font:400 22px 'Bebas Neue',Impact,sans-serif;text-transform:uppercase}.of2 small{display:block;color:var(--mu)}
+.rg{text-align:right;flex:none!important}.rg b{display:block;font:400 18px 'Bebas Neue',Impact,sans-serif!important}.rg em{display:block;font-style:normal;color:#22c55e;font-size:11px;font-weight:600}
+.stay{width:100%;margin-top:10px;background:#0c0c0c;border:1px solid #2a2a2a;border-radius:12px;padding:15px;color:var(--mu);font:400 18px 'Bebas Neue',Impact,sans-serif;letter-spacing:.05em;cursor:pointer}
+.mn{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px}.mn button{text-align:left;background:#000;border:1px solid #242424;border-radius:12px;padding:14px;color:var(--tx);cursor:pointer;font:inherit}
+.mn button:hover{border-color:var(--rd)}.mn b{display:block;font:400 18px 'Bebas Neue',Impact,sans-serif}.mn small{color:var(--mu)}
+.cr{display:inline-flex;align-items:center;justify-content:center;flex:none;width:var(--z);height:calc(var(--z)*1.12);clip-path:polygon(0 0,100% 0,100% 58%,50% 100%,0 58%);font-style:normal;vertical-align:middle}
+.cr b{font:400 calc(var(--z)*.42) 'Bebas Neue',Impact,sans-serif;color:#fff;text-shadow:0 0 3px #000,0 0 3px #000;margin-top:-18%;letter-spacing:0}
+.fl{display:inline-block;width:20px;height:14px;border-radius:2px;vertical-align:middle}.tr{flex-wrap:wrap;gap:6px}
+@media (max-width:900px){.hud{grid-template-columns:1fr}.rw{flex-direction:column}.tl{width:100%;grid-auto-flow:column;grid-auto-columns:112px;overflow-x:auto}.lc{order:3}.wp{width:100%}}
+*{-webkit-tap-highlight-color:transparent}button{touch-action:manipulation}
+.ov{position:fixed;inset:0;z-index:30;background:#000d;backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));overflow:auto}
+.mc2{background:#0a0a0a;border:1px solid #2b2b2b;border-radius:22px;padding:34px 26px;text-align:center;width:min(460px,100%);display:flex;flex-direction:column;align-items:center;gap:8px}
+.mc2 h1{font-size:64px;margin:4px 0}.mc2 h2{font-size:30px;margin:6px 0}.mc2 small{color:var(--mu);letter-spacing:.14em;font-weight:600;font-size:12px}.gold{color:var(--rd2)!important}.mu{color:var(--mu);font-size:12px;letter-spacing:.1em;margin:4px 0}
+.vs{display:flex;gap:14px;align-items:center;justify-content:center;font:400 24px 'Bebas Neue',Impact,sans-serif;flex-wrap:wrap}.vs span{color:var(--mu);font-size:14px}.vs strong{font-size:40px;color:var(--rd2)}
+.fd{width:100%;max-height:130px;overflow:auto;text-align:left;font-size:13px}.fd p{margin:3px 0}
+.cb,.ov .bt{width:min(320px,100%)}
+.op{width:100%;text-align:left;background:#000;border:1px solid #fff;border-radius:12px;padding:14px;color:var(--tx);cursor:pointer;font:inherit}.op b{display:block;font:400 22px 'Bebas Neue',Impact,sans-serif;text-transform:uppercase}.op small{letter-spacing:0;font-weight:400;font-size:13px}
+.sl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0}.sl button{min-width:52px;height:56px;background:#000;border:1px solid #555;border-radius:10px;color:var(--tx);font:400 24px 'Bebas Neue',Impact,sans-serif;cursor:pointer}.sl button:hover{border-color:var(--rd)}
+.tp .tro{font-size:96px;animation:pop 1s ease-out infinite alternate}.cf{position:absolute;inset:0;overflow:hidden;pointer-events:none}.cf i{position:absolute;top:-10px;width:8px;height:14px;animation:fall 2.4s linear infinite}.tp{position:relative;overflow:hidden}
+@keyframes pop{from{transform:scale(.9) rotate(-6deg)}to{transform:scale(1.12) rotate(6deg);filter:drop-shadow(0 0 22px var(--rd))}}@keyframes fall{to{transform:translateY(520px) rotate(540deg)}}
+.nw .nh{display:flex;justify-content:space-between;width:100%;border-bottom:1px solid #2b2b2b;padding-bottom:10px}.nw .ball{font-size:56px}.aw{padding:70px 26px}
+.pn{display:flex;flex-direction:column;align-items:center;gap:6px;width:min(340px,100%)}
+.gf{position:relative;width:100%;aspect-ratio:340/200;border:6px solid #fff;border-bottom:0;background:#0b0b0b linear-gradient(#ffffff14 1px,transparent 1px) 0 0/100% 14px;overflow:visible}
+.gf::after{content:"";position:absolute;left:-6px;right:-6px;bottom:-26px;height:26px;background:linear-gradient(#0b5a36,#052a19)}
+.tg{position:absolute;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;border:2px solid var(--rd);background:transparent;cursor:pointer;z-index:2}.tg::after{content:"";position:absolute;inset:15px;border-radius:50%;background:var(--rd)}.tg.sel{background:#e11d2e55}.tg:disabled{opacity:.5}
+.kp{position:absolute;left:50%;top:50%;width:44px;margin-left:-22px;transition:transform .55s cubic-bezier(.3,.8,.4,1)}.kp s{display:block;width:20px;height:20px;border-radius:50%;background:#f1c9a0;margin:0 auto}
+.kp b{display:block;width:40px;height:38px;border-radius:10px;background:#e883b8;margin:2px auto 0;box-shadow:-13px 6px 0 -3px #fff,13px 6px 0 -3px #fff}
+.bl{position:absolute;left:50%;top:116%;font-size:26px;margin:-13px 0 0 -13px;transition:left .5s ease-out,top .5s ease-out,transform .5s;z-index:3}
+.rs{position:absolute;inset:0;display:grid;place-items:center;font:400 52px 'Bebas Neue',Impact,sans-serif;z-index:4;pointer-events:none}.rs.ok{color:#22c55e}.rs.no{color:#ff4d5a}
+.ctl{width:100%;min-height:150px;margin-top:34px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.pb{position:relative;width:100%;height:16px;border-radius:9px;background:linear-gradient(90deg,#a3000f 0 18%,#f59e0b 18% 31%,#10b981 31% 69%,#f59e0b 69% 82%,#a3000f 82%)}.pb u{position:absolute;top:-3px;width:4px;height:22px;background:#fff;border-radius:2px;left:50%}
+@media (max-width:600px){main{padding:14px 12px 88px}h1{font-size:46px}.mc2{padding:26px 16px}.mc2 h1{font-size:52px}.card{max-width:100%}.hud{gap:12px}.rc{order:1}.mc{order:2}.wp{padding:14px}.wp h2{font-size:24px}.of2{padding:12px}.tr{gap:4px}.tr b{font-size:24px}.cs{gap:2px 14px}select.nt,.nm2 input{font-size:16px}.pg button{padding:10px 4px}.sg{flex-direction:column}}
+.reel.lg{color:#ff7e9d}
+.kp{left:50%;top:auto;bottom:0;width:70px;margin-left:-35px}.kp svg{display:block}.gf i.sp{position:absolute;left:50%;bottom:-9px;width:5px;height:5px;margin-left:-2px;border-radius:50%;background:#e8f5ee;z-index:1}
+.bl{width:26px;height:26px}
+.trf{position:relative;display:flex;justify-content:center;filter:drop-shadow(0 0 22px #f6c74499)}.trf::before{content:"";position:absolute;inset:-8% 10%;background:radial-gradient(closest-side,#f6c74440,transparent);z-index:-1}.em{font-size:84px;line-height:1.1}
+@media (prefers-reduced-motion:reduce){.tk div,tr.r,.card{animation:none;opacity:1}}
+</style></head><body>
+<div class="tk"><div id="tk"></div></div>
+<button id="rs" onclick="home()">↺ INÍCIO</button><main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+const H=['ÚLTIMA HORA: promessa de 16 anos recusa a base do Ibis','MERCADO: empresário garante que "ele é o novo Fenômeno"','BASTIDORES: olheiro europeu visto no Sub-17','BOLA DE OURO: brasileiro entre os favoritos','CONTRATO: multa rescisória assusta gigantes da Europa'];
+$('#tk').innerHTML=(H.map(h=>'<span>● '+h+'</span>').join('')).repeat(2);
+const POS=[['GOL','Goleiro',[.1,0,.15,0,.5,.25]],['ZAG','Zagueiro',[.1,0,.1,.05,.45,.3]],['ALA','Ala',[.25,.05,.2,.15,.2,.15]],['VOL','Volante',[.05,.05,.25,.1,.35,.2]],['MEI','Meia',[.1,.15,.25,.15,.15,.2]],['MAR','Armador',[.05,.2,.35,.3,0,.1]],['PON','Ponta',[.3,.2,.15,.3,0,.05]],['SA','2º Atacante',[.15,.3,.2,.25,0,.1]],['ATA','Atacante',[.2,.45,.05,.2,0,.1]]];
+const ATT=['VELOCIDADE','FINALIZAÇÃO','PASSE','DRIBLE','DEFESA','FÍSICO','FINTAS (★)','PERNA RUIM (★)'],SH=['VEL','FIN','PAS','DRI','DEF','FÍS'];
+const L=`Pelé|92,95,86,95,54,76,5,4|L;Maradona|90,88,92,98,42,74,5,3|L;Ronaldo Nazário|95,96,78,96,38,82,5,4|L;Messi|88,95,94,98,30,66,5,3|P;Cristiano Ronaldo|91,96,80,90,35,86,5,4|P;Ronaldinho|88,88,92,96,40,72,5,4|L;Zidane|76,86,95,95,62,82,5,4|L;Cruyff|86,90,92,94,50,70,4,4|L;Maldini|80,52,80,72,97,85,3,4|L;Cafu|90,60,80,80,86,84,3,4|L;Roberto Carlos|91,80,78,76,82,86,3,5|L;Yashin|70,20,60,40,98,85,1,3|GL;Buffon|68,18,60,40,97,86,1,3|GL;Xavi|68,70,98,90,70,66,4,4|L;Iniesta|74,72,95,95,62,64,5,4|L;Beckenbauer|78,72,90,86,95,82,3,4|L;Baresi|72,50,80,70,97,84,2,4|L;Van Basten|82,95,82,90,40,80,4,4|L;Zico|78,92,92,92,40,70,4,5|L;Neymar|90,86,88,96,36,64,5,4|P;Mbappé|96,91,82,92,38,78,5,4;Platini|74,88,94,90,48,72,4,4|L;Garrincha|92,82,80,98,36,60,5,3|L;Kaká|90,86,88,92,50,78,4,4|L;Pirlo|60,78,98,86,68,66,3,5|L;Puskás|74,98,82,88,36,78,3,5|L;Matthäus|82,82,88,84,86,92,3,4|L;Haaland|87,92,70,83,45,89,3,3;Romário|80,95,80,94,30,70,5,4|L;Rivaldo|78,92,88,92,40,76,5,5|L;Rivelino|76,90,86,90,40,74,5,5|L;Eusébio|92,94,80,90,40,80,4,4|L;Di Stéfano|82,92,92,88,60,86,4,4|L;Bobby Charlton|80,92,90,84,56,82,3,4|L;Gerd Müller|78,98,66,84,30,84,2,4|L;Henry|94,92,86,92,36,76,5,4|L;Lewandowski|80,95,80,88,40,86,3,4|P;Zlatan|80,94,82,90,36,92,5,5|L;Modrić|76,76,94,94,68,72,5,4|P;Kroos|60,78,98,84,66,72,3,4|L;De Bruyne|78,88,98,90,52,78,4,4|P;Salah|94,90,82,92,40,76,4,3|P;Vinícius Jr|93,84,78,91,32,72,5,3;Rodri|62,76,86,83,85,85,2,3;Casemiro|68,70,80,76,92,88,2,3;Sergio Ramos|76,70,76,66,94,90,2,3;Cannavaro|76,40,70,66,96,84,2,3|L;Thiago Silva|70,40,76,70,94,82,2,3;Gullit|82,88,86,88,66,92,4,4|L;Rijkaard|76,72,86,80,90,86,3,4|L;Zanetti|80,60,82,78,88,88,3,4|L;Lahm|80,60,86,84,88,74,3,4|L;Dani Alves|86,64,88,88,80,80,4,5|L;Marcelo|88,72,84,92,72,76,5,4|L;Carlos Alberto|82,70,84,78,86,82,3,4|L;Nilton Santos|84,62,84,82,92,78,3,4|L;Djalma Santos|88,60,84,78,90,82,3,4|L;Neuer|62,30,84,60,98,88,1,3|G;Casillas|60,15,58,40,97,82,1,3|GL;Kahn|62,14,54,36,96,92,1,3|GL;Zoff|56,12,52,34,95,84,1,3|GL;Schmeichel|60,16,60,36,96,92,1,3|GL;Courtois|55,14,58,34,91,88,1,3|G;Alisson|62,16,70,40,96,86,1,3|G;Taffarel|58,14,54,34,94,84,1,3|GL;Lamine Yamal|90,82,86,93,30,62,5,4;Bellingham|80,86,88,90,74,84,4,4;Kane|62,94,86,83,48,84,3,4;Pedri|74,76,90,92,62,64,4,4;Raphinha|84,86,84,88,38,66,4,4;Dembélé|90,86,83,93,40,68,5,5;Musiala|84,80,84,94,50,66,5,4;Saka|84,84,84,88,56,70,4,4;Foden|82,84,86,92,50,62,4,4;Rafael Leão|93,80,76,92,34,78,5,3;Osimhen|90,88,66,84,40,86,3,3;Lautaro Martínez|78,90,76,86,44,82,4,3;Julián Álvarez|80,86,80,86,52,76,3,4;Valverde|88,80,84,82,78,86,3,4;Kvaratskhelia|88,84,80,91,40,70,5,4;Olise|86,86,88,92,40,66,5,4;Wirtz|80,82,90,92,40,60,4,4;Rodrygo|88,84,80,90,36,66,5,4;Endrick|82,86,66,82,34,82,3,3;Estêvão|86,76,80,92,32,56,5,3;Cole Palmer|76,86,86,88,44,64,4,4;Declan Rice|76,66,84,78,87,86,3,3;Van Dijk|80,62,72,72,89,90,2,3;Alexander-Arnold|76,72,92,78,76,72,3,4;Hakimi|92,78,82,84,76,78,4,3;Saliba|80,46,72,72,88,86,2,3;Rüdiger|86,48,66,64,90,90,2,3;Marquinhos|78,52,76,74,92,80,2,3;Gyökeres|86,88,70,82,36,88,3,3;Camavinga|82,60,82,84,78,80,3,3;Nuno Mendes|94,64,80,86,84,76,4,3;Vitinha|80,76,90,90,72,68,3,4;Son|90,86,78,86,40,72,4,5;Ruben Dias|74,40,72,68,94,88,2,3;Messi|72,88,92,92,32,60,5,3;Cristiano Ronaldo|70,90,74,78,30,80,4,4;Neymar|70,78,84,86,30,60,5,4;De Bruyne|68,82,92,80,48,72,4,5;Salah|86,88,80,88,38,72,4,3;Lewandowski|68,90,76,80,38,80,3,4;Modrić|66,70,92,88,64,68,5,4;Benzema|70,84,78,82,34,74,4,4;Benzema|80,92,82,90,38,78,4,4|P;Ter Stegen|60,15,74,40,92,84,1,4|G;Oblak|56,14,60,36,89,88,1,3|G;Ederson|60,16,86,42,92,84,1,5|G;Donnarumma|56,14,60,36,90,90,1,3|G;Maignan|62,16,68,40,93,86,1,3|G;Dibu Martínez|58,14,56,36,92,86,1,3|G;Raya|58,14,70,40,90,84,1,4|G;Messi§10/11|94,96,92,99,32,68,5,3|P;Messi§Copa 2022|84,92,92,94,34,66,5,3|P;Ronaldo Nazário§Copa 2002|96,98,80,98,36,84,5,4|P;Ronaldo Nazário§96/97|98,95,78,98,36,80,5,4|P;Cristiano Ronaldo§07/08|94,95,80,94,36,86,5,4|P;Cristiano Ronaldo§13/14|92,97,80,90,36,88,5,4|P;Ronaldinho§05/06|90,90,92,98,38,74,5,4|P;Neymar§14/15|92,88,88,97,34,64,5,4|P;Kaká§06/07|92,88,90,94,50,80,4,4|P;Zidane§Copa 98|78,88,95,95,64,84,5,4|P;Maradona§Copa 86|92,90,92,99,42,76,5,3|P;Pelé§Copa 70|93,96,88,96,54,76,5,4|P;Henry§03/04|96,94,86,94,38,78,5,4|P;Iniesta§Copa 2010|76,74,96,96,62,66,5,4|P;Mbappé§Copa 2022|99,94,82,95,36,78,5,4|P;Haaland§22/23|94,98,70,82,38,94,3,4|P;Salah§17/18|95,94,84,92,40,76,4,3|P;De Bruyne§19/20|78,88,98,92,50,78,4,5|P;Lewandowski§19/20|80,98,82,88,40,86,3,4|P;Modrić§Bola de Ouro 2018|74,78,95,94,68,72,5,4|P;Van Basten§88/89|82,98,84,92,40,82,4,4|P;Shearer|82,92,70,80,44,90,3,4|L;Raúl|78,90,82,88,42,76,4,4|L;Totti|74,90,92,90,42,74,4,5|L;Del Piero|78,90,88,92,40,70,5,5|L;Baggio|76,90,90,94,40,70,4,5|L;Figo|84,82,90,92,50,76,5,4|L;Nedvěd|84,86,86,86,70,92,3,4|L;Weah|90,88,70,88,38,88,3,4|L;Stoichkov|82,92,78,90,40,80,4,5|L;Hagi|74,90,90,92,42,70,4,5|L;Rooney|82,90,86,86,56,86,3,4|L;Drogba|80,90,70,80,46,94,3,4|L;Eto'o|92,90,70,88,38,80,4,4|L;Xabi Alonso|60,76,94,76,82,76,2,4|L;Lampard|74,90,86,80,66,84,2,4|L;Gerrard|78,88,90,80,78,88,3,5|L;Puyol|74,40,60,60,95,86,1,2|L;Piqué|70,56,82,72,92,84,2,3|L;Vidić|66,40,60,56,94,92,1,3|L;Nesta|76,40,70,70,96,80,2,3|L;Thuram|82,50,70,66,92,86,2,3|L;Stam|80,40,66,64,94,90,2,3|L;Ferdinand|78,40,78,72,92,82,2,4|L;Vieira|76,70,84,80,84,92,3,4|L;Seedorf|80,84,88,86,66,80,4,4|L;Rui Costa|68,82,90,90,50,66,4,5|L;Batistuta|82,96,70,82,38,88,2,4|L;Cantona|70,86,84,86,48,82,4,4|L;Bergkamp|72,88,92,94,46,70,4,4|L;Robben|94,88,80,94,36,76,5,3|L;Ribéry|90,82,86,92,46,72,5,4|L;Agüero|86,92,78,92,36,80,4,3|L;Gabriel|78,46,64,66,91,86,2,3;Bruno Fernandes|68,86,92,86,66,76,4,5;Willian Pacho|82,40,70,68,89,84,2,3;João Neves|78,64,86,86,84,76,3,3;Kimmich|70,76,90,82,86,78,3,4;Luis Díaz|90,82,76,88,46,76,4,3`.split(';').map(s=>{const[n,a,fl='']=s.split('|');return{n,a:a.split(',').map(Number),g:fl.includes('G'),p:fl.includes('P'),l:fl.includes('L')}});
+const CT={BR:['Brasil','SA',9,'Brasileirão'],AR:['Argentina','SA',9,'Liga Argentina'],UY:['Uruguai','SA',6,'Campeonato Uruguaio'],FR:['França','EU',9,'Ligue 1'],DE:['Alemanha','EU',8,'Bundesliga'],EN:['Inglaterra','EU',8,'Premier League'],ES:['Espanha','EU',9,'La Liga'],IT:['Itália','EU',7,'Serie A'],PT:['Portugal','EU',7,'Primeira Liga'],NL:['Holanda','EU',7,'Eredivisie'],US:['EUA','US',5,'MLS'],SD:['Arábia Saudita','AS',4,'Liga Saudita']};
+const CL=`Ibis,2,BR;Náutico,3,BR;Bangu,3,BR;Goiás,4,BR;Flamengo,7,BR;Palmeiras,7,BR;Platense,3,AR;Banfield,4,AR;Tigre,3,AR;Lanús,4,AR;Boca Juniors,6,AR;River Plate,6,AR;Danubio,3,UY;Defensor,3,UY;Wanderers,2,UY;Peñarol,5,UY;Lorient,3,FR;Auxerre,3,FR;Brest,4,FR;Lens,5,FR;PSG,9,FR;Bochum,3,DE;Mainz,4,DE;Augsburg,3,DE;Dortmund,7,DE;Bayern,10,DE;Burnley,3,EN;Brentford,4,EN;Watford,3,EN;Liverpool,9,EN;Man City,10,EN;Getafe,3,ES;Osasuna,4,ES;Cádiz,2,ES;Atlético,8,ES;Barcelona,10,ES;Real Madrid,10,ES;Empoli,3,IT;Cagliari,3,IT;Genoa,4,IT;Milan,8,IT;Juventus,8,IT;Inter,9,IT;Boavista,3,PT;Braga,4,PT;Estoril,3,PT;Benfica,7,PT;Heerenveen,3,NL;Utrecht,4,NL;Twente,4,NL;Ajax,6,NL`.split(';').map(s=>{const[n,c,k]=s.split(',');return[n,+c,CT[k][1],k]});
+const EX=`BR:Corinthians 6,Internacional 6,Grêmio 6,Fluminense 6,Atlético Mineiro 6,Santos 5,Botafogo 6,São Paulo 5,Fortaleza 5,Cruzeiro 5,Vasco 4,Bahia 4;AR:Racing 5,Independiente 5,San Lorenzo 5,Estudiantes 5,Vélez 5,Talleres 5,Rosario Central 4,Newell's 4,Huracán 4,Argentinos Juniors 4,Defensa y Justicia 3,Belgrano 4;UY:Nacional 5,Cerro 3,Liverpool UY 3,Plaza Colonia 2,Progreso 2,Racing UY 2,River Plate UY 2,Boston River 2;FR:Marseille 7,Lyon 7,Monaco 7,Lille 6,Nice 5,Rennes 5,Nantes 4,Strasbourg 4,Toulouse 4,Montpellier 4,Reims 4,Le Havre 3,Angers 3;DE:Leverkusen 8,RB Leipzig 7,Stuttgart 6,Frankfurt 6,Wolfsburg 5,Gladbach 5,Hoffenheim 5,Freiburg 5,Werder Bremen 5,Union Berlin 4,Köln 4,Heidenheim 3,Hamburgo 4;EN:Arsenal 9,Chelsea 8,Man United 8,Tottenham 8,Newcastle 7,Aston Villa 7,West Ham 6,Brighton 6,Fulham 5,Everton 5,Crystal Palace 5,Wolves 4,Leeds 4;ES:Sevilla 6,Valencia 6,Villarreal 6,Real Sociedad 6,Athletic Bilbao 6,Betis 6,Celta 4,Mallorca 4,Girona 5,Rayo Vallecano 4,Alavés 3,Las Palmas 3;IT:Napoli 8,Roma 7,Lazio 7,Atalanta 7,Fiorentina 6,Bologna 6,Torino 5,Udinese 4,Sassuolo 4,Verona 3,Lecce 3,Parma 3;PT:Porto 7,Sporting 7,Vitória de Guimarães 5,Famalicão 3,Gil Vicente 3,Arouca 3,Casa Pia 3,Rio Ave 3,Moreirense 3,Santa Clara 3,Farense 2;NL:PSV 7,Feyenoord 7,AZ 6,Vitesse 4,Groningen 3,NEC 3,Sparta Rotterdam 3,Go Ahead Eagles 3,Fortuna Sittard 2,Heracles 2,PEC Zwolle 2,Willem II 2;US:LAFC 5,Inter Miami 5,LA Galaxy 4,Seattle Sounders 4,Atlanta United 4,Columbus Crew 4,NYCFC 4,Philadelphia Union 3,Austin FC 3,Portland Timbers 3,Orlando City 3,Nashville SC 3;SD:Al-Hilal 6,Al-Nassr 6,Al-Ittihad 5,Al-Ahli 5,Al-Shabab 4,Al-Taawoun 3,Al-Ettifaq 3,Al-Fayha 3,Al-Raed 2,Damac 2`;EX.split(';').forEach(s=>{const[k,l]=s.split(':');l.split(',').forEach(e=>{const i=e.lastIndexOf(' ');CL.push([e.slice(0,i),+e.slice(i+1),CT[k][1],k])})});
+const LATE=CL.filter(x=>x[3]=='US'||x[3]=='SD');
+const TN=['Jogador comum','Sensação de uma temporada','Estrela','Jogador histórico','Top 50 de todos os tempos','Um dos melhores da posição','Top 10 de todos os tempos','O melhor da posição na história','Top 5 de todos os tempos','Sempre citado no debate GOAT','O FENÔMENO'];
+const TH=[0,77,127,159,196,238,267,302,319,375,393],BDG=[0,0,0,0,0,0,1,2,3,4,6];
+const AC=[-16,-12,-9,-6,-4,-2.5,-1.5,-.5,0,0,0,0,-.5,-1.5,-3,-5,-7,-9,-12,-15,-18,-21,-24,-27];
+function rng(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const S={pos:8,mode:0,seed:0,order:[],spin:0,slots:[],roll:false,name:'',num:9,nat:'BR',fast:0,tok:0};
+function ovr(sl,pi){const w=POS[pi][2];let s=0;for(let i=0;i<6;i++)s+=w[i]*(sl[i]??45);const b=pi?((sl[6]??3)+(sl[7]??3)-6)*.5:0;return Math.max(30,Math.min(99,Math.round(s+b)))}
+const adj=(v,i)=>S.mode?v:(i<6?Math.min(99,v+5):Math.min(5,v+1));
+function home(){S.tok++;app.className='';let best='';try{const b=JSON.parse(localStorage.getItem('fen_best')||'[]');if(b.length)best='<h2>Seus melhores</h2><ol class="bs">'+b.map(x=>`<li><b>${x.t}</b> · ${x.p} · ${x.bd} Bolas de Ouro · ${x.ti} títulos</li>`).join('')+'</ol>'}catch(e){}
+app.innerHTML=`<h1>VOCÊ É<br><em>O FENÔMENO?</em></h1><p class="lead">Roube atributos dos craques, viva uma carreira inteira e descubra onde você fica entre os maiores de todos os tempos.</p>
+<h2>Seu jogador</h2><div class="nm2"><input maxlength="18" placeholder="Nome" value="${S.name}" oninput="S.name=this.value"><input type="number" min="1" max="99" placeholder="Nº" value="${S.num}" oninput="S.num=this.value"></div><select class="nt" onchange="S.nat=this.value">${Object.keys(CT).filter(k=>['EU','SA'].includes(CT[k][1])).map(k=>`<option value="${k}" ${k==S.nat?'selected':''}>${CT[k][0]}</option>`).join('')}</select><h2>Sua posição</h2><div class="pg">${POS.map((p,i)=>`<button class="${i==S.pos?'on':''}" onclick="S.pos=${i};home()"><b>${p[0]}</b><small>${p[1]}</small></button>`).join('')}</div>
+<div class="sg"><button class="${S.mode?'':'on'}" onclick="S.mode=0;home()"><b>Amador</b><small>Mais perdoador</small></button><button class="${S.mode?'on':''}" onclick="S.mode=1;home()"><b>Pro</b><small>Valores crus</small></button></div>
+<div class="sg"><button class="${S.fast?'':'on'}" onclick="S.fast=0;home()"><b>Simulação completa</b><small>Ano a ano</small></button><button class="${S.fast?'on':''}" onclick="S.fast=1;home()"><b>Fast mode</b><small>Sem pausas</small></button></div><button class="bt" onclick="start()">JOGAR</button>${best}<p class="sm" style="margin-top:36px">Sem afiliação com nenhuma liga, federação, clube ou jogador. Nomes usados apenas para identificação. Atributos dos jogadores atuais baseados nos ratings do EA FC 27 quando disponíveis; os demais são estimativas.</p>`}
+function start(){S.seed=Math.floor(Math.random()*4294967296);const R=rng(S.seed),o=L.map((_,i)=>i).filter(i=>L[i].g==!S.pos);for(let i=o.length-1;i>0;i--){const j=Math.floor(R()*(i+1));[o[i],o[j]]=[o[j],o[i]]}S.order=o.filter((i,k)=>o.findIndex(j=>L[j].n.split('§')[0]==L[i].n.split('§')[0])==k);S.spin=0;S.slots=Array(8).fill(null);spin()}
+function spin(){S.roll=true;draw();let n=0,t=S.tok;const iv=setInterval(()=>{if(t!=S.tok){clearInterval(iv);return}const e=$('#rl');if(e)e.textContent=L[S.order[Math.floor(Math.random()*S.order.length)]].n.split('§')[0];if(++n>12){clearInterval(iv);S.roll=false;draw()}},65)}
+function draw(){const lg=L[S.order[S.spin]];app.innerHTML=`<div class="top"><span>GIRO ${S.spin+1} DE 8 · ${POS[S.pos][1]}</span><b>OVR ${ovr(S.slots,S.pos)}</b></div>
+<div class="reel ${S.roll?'r':lg.p?'pr':lg.l?'lg':''}" id="rl">${S.roll?'…':lg.n.split('§')[0]+(lg.p?`<span class="pm">PRIME${lg.n.includes('§')?' · '+lg.n.split('§')[1]:''}</span>`:'')}</div><p class="lead">${S.roll?'Sorteando uma lenda…':'Escolha um atributo para roubar. Atributos já roubados ficam com você.'}</p>
+<div class="ag">${ATT.map((a,i)=>{const f=S.slots[i]!=null,v=i<6?lg.a[i]:st(lg.a[i]);return`<button class="${f?'f':''}" ${S.roll||f?'disabled':''} onclick="pick(${i})"><b>${a}</b><span>${S.roll?'?':f?(i<6?S.slots[i]:st(S.slots[i])):(S.mode||i>5?v:(i<6?Math.min(99,lg.a[i]+5):st(Math.min(5,lg.a[i]+1))))}</span></button>`}).join('')}</div>`}
+function pick(i){if(S.slots[i]!=null||S.roll)return;const lg=L[S.order[S.spin]];S.slots[i]=adj(lg.a[i],i);S.spin++;S.spin<8?spin():career()}
+const st=n=>'★'.repeat(n)+'☆'.repeat(5-n),el=n=>'★'.repeat(Math.max(1,Math.round(n/2))),dirs=['esquerda','centro','direita'];
+const ask=h=>new Promise(r=>{app.className=h.startsWith('<div class="hud')?'w':'';app.innerHTML=h;window.go=r;window.scrollTo(0,0)});
+const GR=[0,.05,.06,.05,.12,.15,.3,.42,.6],AR=[0,.03,.2,.1,.2,.4,.3,.25,.15];
+let C;const oAt=a=>C.peak+AC[Math.min(a-16,23)]+C.wb[Math.min(a-16,24)];
+const cstr=c=>C.cl[c[0]]??c[1];
+function table(club,cs,o){const R=C.R,k=club[3],pool=CL.filter(x=>x[3]==k&&x!=club),n=[];
+for(let i=0;i<Math.min(17,pool.length);i++){const b=pool[i];n.push({n:b[0],b,s:cstr(b)})}
+n.push({n:club[0],b:club,s:cs+(o-72)/12,me:1});
+const G=(n.length-1)*2;n.forEach(x=>{x.p=Math.round(G*(.7+x.s*.13)+(R()-.5)*G*.42);if(R()<.2)C.cl[x.b[0]]=Math.max(2,Math.min(10,cstr(x.b)+(R()<.5?-1:1)))});
+return n.sort((a,b)=>b.p-a.p||(b.me?1:0)-(a.me?1:0))}
+const tbl=(rows,gk)=>`<div class="tw"><table><tr><th>Temporada</th><th>Clube</th><th>OVR</th><th>J</th><th>${gk?'SG':'G'}</th><th>${gk?'':'A'}</th><th>Nota</th><th>Liga</th><th>Conquistas</th></tr>${rows.map(x=>`<tr class="${x.mv?'t':''}"><td>${2010+x.age}-${String(11+x.age).slice(-2)} <small style="color:var(--mu)">${x.age}a</small></td><td>${crest(x.c,16)} ${x.c}${x.mv?' ➜':''}</td><td>${x.o}</td><td>${x.gm}</td><td>${x.x}</td><td>${gk?'':x.y}</td><td>${x.rt}</td><td>${x.p}º</td><td>${x.tg.join(' · ')}</td></tr>`).join('')}</table></div>`;
+const cont=h=>`<button class="bt" onclick="go()">${h}</button>`;
+const KSVG='<svg viewBox="0 0 70 84" width="70" height="84"><rect x="26" y="52" width="8" height="30" rx="3" fill="#1b2352"/><rect x="36" y="52" width="8" height="30" rx="3" fill="#1b2352"/><path d="M22 26 8 40M48 26 62 40" stroke="#e883b8" stroke-width="8" stroke-linecap="round"/><rect x="19" y="22" width="32" height="34" rx="10" fill="#e883b8"/><circle cx="35" cy="12" r="10" fill="#f2c9a0"/><circle cx="35" cy="38" r="8" fill="#2f8f6f" stroke="#fff" stroke-width="2"/><circle cx="7" cy="43" r="6" fill="#fff"/><circle cx="63" cy="43" r="6" fill="#fff"/></svg>';
+const BSVG='<svg class="bl" viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="12" r="11" fill="#eef2ff" stroke="#27348b" stroke-width="1.5"/><polygon points="12,7 16,10 14.5,15 9.5,15 8,10" fill="#3b5bd6"/><path d="M12 7V1M16 10l6-2M14.5 15l4 5M9.5 15l-4 5M8 10 2 8" stroke="#3b5bd6" stroke-width="1.2" fill="none"/></svg>';
+const PED='<ellipse cx="80" cy="128" rx="60" ry="14" fill="url(#pd)" stroke="#f2b92b" stroke-opacity=".6"/><rect x="38" y="112" width="84" height="16" fill="url(#pd)"/><ellipse cx="80" cy="112" rx="42" ry="9" fill="#161616" stroke="#f2b92b" stroke-opacity=".7"/>';
+const DEFS='<defs><radialGradient id="g1" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#fff7c2"/><stop offset=".45" stop-color="#f6c744"/><stop offset="1" stop-color="#8a5a00"/></radialGradient><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2a0"/><stop offset=".5" stop-color="#f2b92b"/><stop offset="1" stop-color="#9a6500"/></linearGradient><radialGradient id="pd" cx="50%" cy="35%"><stop offset="0" stop-color="#2e2e2e"/><stop offset="1" stop-color="#060606"/></radialGradient></defs>';
+const BALL='<svg viewBox="0 0 160 150" width="190">'+DEFS+PED+'<circle cx="80" cy="62" r="44" fill="url(#g1)"/><polygon points="80,42 98,55 91,76 69,76 62,55" fill="#8a5a00" fill-opacity=".55"/><path d="M80 42V20M98 55l20-7M91 76l13 17M69 76 56 93M62 55 42 48" stroke="#8a5a00" stroke-opacity=".5" stroke-width="2.5" fill="none"/></svg>';
+const BOOT='<svg viewBox="0 0 160 150" width="190">'+DEFS+PED+'<g transform="translate(22 30)"><path d="M6 8 34 4 40 28C54 36 80 30 94 28 110 28 116 40 116 52L116 58 2 58Z" fill="url(#g3)"/><path d="M2 58H116V66H2Z" fill="#9a6500"/><path d="M44 30 56 22M54 34 66 26M64 36 76 28" stroke="#8a5a00" stroke-width="3" stroke-linecap="round"/><g fill="#8a5a00"><rect x="10" y="66" width="7" height="10" rx="2"/><rect x="34" y="66" width="7" height="10" rx="2"/><rect x="62" y="66" width="7" height="10" rx="2"/><rect x="88" y="66" width="7" height="10" rx="2"/></g></g></svg>';
+const mdl=h=>new Promise(r=>{const d=document.createElement('div');d.className='ov';d.innerHTML=h;document.body.appendChild(d);window.mg=v=>{d.remove();r(v)}});
+const M=h=>S.fast?Promise.resolve(0):mdl(h+'<button class="bt cb" onclick="mg(0)">CONTINUAR</button>');
+const dec=(t,o)=>S.fast?Promise.resolve(0):mdl(`<div class="mc2"><span class="pill">DECISÃO</span><h2>${t}</h2>${o.map((x,i)=>`<button class="op" onclick="mg(${i})"><b>${x[0]}</b><small>${x[1]}</small></button>`).join('')}</div>`);
+const sy=a=>`${2010+a}-${String(11+a).slice(-2)}`,rd=a=>a[Math.floor(C.R()*a.length)];
+const trophy=(n,a)=>M(`<div class="mc2 tp"><div class="cf">${Array.from({length:28},(_,i)=>`<i style="left:${i*3.6}%;animation-delay:${(i%7)*.15}s;background:hsl(${i*47%360},85%,60%)"></i>`).join('')}</div><div class="tro">🏆</div><small class="gold">CAMPEÃO</small><h2>${n}</h2><small>${sy(a)}</small></div>`);
+const news=(t,a,ic='⚽',h='ÚLTIMA HORA')=>M(`<div class="mc2 nw"><div class="nh"><b class="gold">${h}</b><small>${sy(a)}</small></div><div class="ball">${ic}</div><h2>${t}</h2><small class="mu">O FENÔMENO</small></div>`);
+const PL=[[17,24],[83,24],[50,36],[17,64],[83,64]];
+function scene(h,s,gk,decide){
+ if(S.fast||window.AUTO){const t=Math.floor(C.R()*5);return Promise.resolve(decide(t,C.R()<.7?1:.4).ok)}
+ return new Promise(res=>{const d=document.createElement('div');d.className='ov';document.body.appendChild(d);
+ d.innerHTML=`<div class="pn"><b class="gold">${h}</b><small>${s}</small><p class="mu">${gk?'— SUA DEFESA — TOQUE ONDE PULAR':'— SUA COBRANÇA — TOQUE ONDE MIRAR'}</p><div class="gf">${PL.map((p,i)=>`<button class="tg" data-i="${i}" style="left:${p[0]}%;top:${p[1]}%"></button>`).join('')}<div class="kp">${KSVG}</div><i class="sp"></i>${BSVG}</div><div class="ctl"><p class="mu">ESCOLHA O CANTO</p></div></div>`;
+ const q=x=>d.querySelector(x),kp=q('.kp'),bl=q('.bl'),gf=q('.gf'),ctl=q('.ctl');
+ const play=(t,pw)=>{const r=decide(t,pw),sh=gk?r.k:t,kk=gk?t:r.k,B=PL[kk],T=PL[sh];
+  d.querySelectorAll('.tg').forEach(b=>b.disabled=true);
+  const W=gf.offsetWidth||340,GH=W*.588;kp.style.transform=`translate(${(B[0]-50)*W*.0085}px,${B[1]*GH/100-(GH-42)}px) rotate(${B[0]<45?-70:B[0]>55?70:0}deg)`;
+  bl.style.left=(r.out=='wide'?T[0]+(T[0]<50?-24:24):T[0])+'%';bl.style.top=(r.out=='wide'?-6:T[1])+'%';bl.style.transform='scale(.55)';
+  const L=r.out=='goal'?(gk?'É GOL…':'GOL!'):r.out=='save'?'DEFENDEU!':'PRA FORA!';
+  setTimeout(()=>{gf.insertAdjacentHTML('beforeend',`<div class="rs ${r.ok?'ok':'no'}">${L}</div>`);ctl.innerHTML='<button class="bt">CONTINUAR</button>';ctl.firstChild.onclick=()=>{d.remove();res(r.ok)}},650)};
+ d.querySelectorAll('.tg').forEach(b=>b.onclick=()=>{const t=+b.dataset.i;b.classList.add('sel');
+  if(gk)return play(t,1);
+  ctl.innerHTML='<div class="pb"><u></u></div><button class="bt">BATER</button><p class="mu">PARE NO VERDE</p>';const mk=ctl.querySelector('u'),t0=performance.now();let pos=.5,raf;
+  const tick=n=>{pos=Math.abs((n-t0)%1400/700-1);mk.style.left=pos*100+'%';raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick);
+  ctl.querySelector('.bt').onclick=()=>{cancelAnimationFrame(raf);const z=Math.abs(pos-.5);play(t,z<.19?1:z<.32?.6:.25)}})})}
+const ukick=(h,s,gk)=>scene(h,s,gk,(t,pw)=>{const R=C.R,k=Math.floor(R()*5),q=R();let out,ok;
+ if(gk){const sv=t==k?q<Math.min(.8,.45+(S.slots[4]-70)*.004):q<.05,wd=!sv&&R()<.08;ok=sv||wd;out=sv?'save':wd?'wide':'goal'}
+ else if(R()>(pw>=1?1:pw>=.6?.72:.35)){ok=false;out='wide'}
+ else{const same=k==t;ok=q<(same?.28:.93)+(S.slots[1]-75)*.003+(S.slots[7]-3)*.015;out=ok?'goal':same?'save':'wide'}
+ return{k,ok,out}});
+async function shoot(h){const gk=!S.pos;let a=0,b=0,j=S.fast?Math.floor(C.R()*5):await mdl(`<div class="mc2"><small class="gold">DISPUTA DE PÊNALTIS</small><small>Empate em 90 — vai pros pênaltis</small><h2>${gk?'QUAL COBRANÇA VOCÊ DEFENDE?':'QUAL COBRANÇA VOCÊ BATE?'}</h2><div class="sl">${[0,1,2,3,4].map(i=>`<button onclick="mg(${i})">${i+1}º</button>`).join('')}</div><p class="mu">Seu jogador assume essa cobrança — as outras quatro são dos companheiros.</p></div>`);
+ for(let i=0;i<5||a==b;i++){const sub=`${h} · cobrança ${i+1} · ${a}x${b}`;
+  if(i==j&&!gk?await ukick('PÊNALTI!',sub,0):C.R()<.76)a++;
+  if(i==j&&gk?!(await ukick('PÊNALTI!',sub,1)):C.R()<.76)b++}
+ await M(`<div class="mc2"><small class="gold">DISPUTA DE PÊNALTIS</small><h2>${a>b?'VENCEU':'PERDEU'} NOS PÊNALTIS</h2><h1>${a} x ${b}</h1></div>`);return a>b}
+function live(me,op,ev,a,b){if(S.fast||window.AUTO)return Promise.resolve();
+ return new Promise(res=>{const d=document.createElement('div');d.className='ov';document.body.appendChild(d);let m=0,A=0,B=0,i=0,iv;
+ d.innerHTML=`<div class="mc2"><small id="lc" class="gold">0'</small><div class="vs"><b>${me}</b><strong id="sc">0 - 0</strong><b>${op}</b></div><div class="fd"></div><button class="bt g">PULAR</button></div>`;
+ const q=x=>d.querySelector(x),end=()=>{clearInterval(iv);q('#lc').textContent='FIM';q('#sc').textContent=a+' - '+b;q('.bt').textContent='CONTINUAR';q('.bt').onclick=()=>{d.remove();res()}};
+ iv=setInterval(()=>{m++;q('#lc').textContent=m+"'";while(i<ev.length&&ev[i].m<=m){const e=ev[i++];e.us?A++:B++;q('#sc').textContent=A+' - '+B;q('.fd').insertAdjacentHTML('afterbegin',`<p>⚽ ${e.m}' ${e.n}</p>`)}if(m>=90)end()},70);q('.bt').onclick=end})}
+async function fin(nm,W,wc,force,rg,lo){if(!force&&C.R()>=Math.min(.7,W*2.2))return -1;const R=C.R,x=R(),pi=S.pos,k=rd(Object.keys(CT).filter(z=>z!=S.nat&&!['US','SD'].includes(z)));
+ let pool=wc?[]:CL.filter(c=>c[2]==rg&&c[0]!=C.club[0]&&cstr(c)>=(lo||0));if(!wc&&!pool.length)pool=CL.filter(c=>c[2]==rg&&c[0]!=C.club[0]);
+ const oc=wc?null:rd(pool),me=wc?CT[S.nat][0]:C.club[0],op=wc?CT[k][0]:oc[0],st=(wc?CT[S.nat][2]:cstr(C.club))-(wc?CT[k][2]:cstr(oc)),wt=Math.max(.2,Math.min(.6,.4+st*.04)),g0=Math.floor(R()*3),w=x<wt,pn=!w&&x<wt+.22;
+ const a=w?g0+1+Math.floor(R()*2):g0,b=w?g0:pn?g0:g0+1+Math.floor(R()*2),ev=[];
+ for(let i=0;i<a+b;i++)ev.push({m:1+Math.floor(R()*89),us:i<a,n:''});ev.sort((u,v)=>u.m-v.m);
+ ev.forEach(e=>{if(e.us){const me2=R()<(pi>=6?.5:pi>=4?.28:pi?.08:0);e.n=me2?C.name:'Companheiro';if(me2)C.fg=(C.fg||0)+1}else e.n='Adversário'});
+ const v=S.fast?2:await mdl(`<div class="mc2"><small>${sy(C.age)}</small><small class="gold">${nm.toUpperCase()}</small><h1>FINAL</h1><div class="vs"><b>${me}</b><span>VS</span><b>${op}</b></div><button class="bt" onclick="mg(1)">▶ ASSISTIR À FINAL</button><button class="bt g" onclick="mg(2)">PULAR</button></div>`);
+ if(!S.fast&&v==1)await live(me,op,ev,a,b);
+ const win=w||(pn&&await shoot(nm));
+ if(!S.fast&&v!=1)await M(`<div class="mc2"><small class="gold">${nm.toUpperCase()}</small><h1>${a} x ${b}</h1><h2>${win?'CAMPEÃO!':'VICE-CAMPEÃO'}</h2></div>`);
+ return win?1:0}
+const NPC=['Lucas','Mateo','Gabriel','Enzo','Thiago','Rafael','Diego','Luka','Marco','Kai','Noah','Leo','Matheus','Nico','Arthur','Samuel','Yuri','Dani'],NS=['Silva','Costa','Rossi','Müller','Dubois','Santos','Fernández','Moreno','Andrade','Lopes','Ferreira','Weber','Novak','Ricci','Bianchi','Almeida','Torres','Vargas'];
+const STARS=[['Lamine Yamal','Barcelona'],['Mbappé','Real Madrid'],['Haaland','Man City'],['Vinícius Jr','Real Madrid'],['Bellingham','Real Madrid'],['Kane','Bayern'],['Dembélé','PSG'],['Salah','Liverpool'],['Musiala','Bayern'],['Raphinha','Barcelona'],['Pedri','Barcelona'],['Wirtz','Liverpool'],['Saka','Arsenal'],['Rodrygo','Real Madrid']],SAS=[['Arrascaeta','Flamengo'],['Pedro','Flamengo'],['Memphis Depay','Corinthians'],['Hulk','Atlético Mineiro'],['Neymar','Santos'],['Gabigol','Cruzeiro'],['Germán Cano','Fluminense']];
+const RV=[['Lamine Yamal','Barcelona','ES'],['Vinícius Jr','Real Madrid','ES'],['Bellingham','Real Madrid','ES'],['Haaland','Man City','EN'],['Mbappé','Real Madrid','ES'],['Musiala','Bayern','DE'],['Saka','Arsenal','EN'],['Foden','Man City','EN'],['Wirtz','Liverpool','EN'],['Pedri','Barcelona','ES'],['Kane','Bayern','DE'],['Endrick','Real Madrid','ES'],['Estêvão','Chelsea','EN'],['Dembélé','PSG','FR']];
+async function aw(t,me,age,club,sa){let n=C.name,c=club[0],r=0;
+ if(!me){if(C.rv&&age-C.rv.s<14&&C.R()<.5){n=C.rv.n;c=C.rv.c;r=1;if(t=='BOLA DE OURO')C.rv.bd++}else if(sa||2010+age<=2036){const s=rd(sa?SAS:STARS);n=s[0];c=s[1]}else{n=rd(NPC)+' '+rd(NS);c=rd(CL.filter(x=>x[1]>=8))[0]}}
+ await M(`<div class="mc2 aw"><div class="trf">${t=='BOLA DE OURO'?BALL:t=='CHUTEIRA DE OURO'?BOOT:`<span class="em">${t=='LUVA DE OURO'?'🧤':'👑'}</span>`}</div><small class="gold">${t}</small><h2>${n}</h2><p class="mu">(${c})</p>${r?'<small class="ac">Seu rival levou o prêmio.</small>':''}</div>`)}
+async function rival(age,club){if(C.rv||age<19||age>26)return;const same=RV.filter(r=>r[2]==club[3]&&r[1]!=club[0]),pool=same.length?same:RV;
+ if(C.R()<(same.length?.09:.025)){const r=rd(pool);C.rv={n:r[0],c:r[1],s:age,bd:0};await news(`${r[0]} (${r[1]}) vira seu rival`,age,'🔥','RIVALIDADE')}}
+const taken=(x,n)=>hs(x[0]+'#'+n)%100<(n<=11?50:20);
+async function pickNum(x){if(!taken(x,C.num))return;const fr=[];for(let n=1;n<99&&fr.length<14;n++){const m=(C.num+n-1)%99+1;if(!taken(x,m))fr.push(m)}
+ C.num=S.fast||window.AUTO?fr[0]:await mdl(`<div class="mc2"><small class="gold">NÚMERO OCUPADO</small><h2>O Nº ${C.num} já tem dono no ${x[0]}</h2><p class="mu">Escolha outro número:</p><div class="sl">${fr.map(n=>`<button onclick="mg(${n})">${n}</button>`).join('')}</div></div>`)}
+const hs=s=>{let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h},KC={};
+`Flamengo:c8102e:111111;Palmeiras:0a7a3e:ffffff;Corinthians:111111:ffffff;Internacional:d4002a:ffffff;Grêmio:0d80bf:111111;Fluminense:7a1e3a:0b7a3e;Atlético Mineiro:111111:ffffff;Santos:ffffff:111111;Botafogo:111111:ffffff;São Paulo:e30613:111111;Cruzeiro:0050a4:ffffff;Vasco:111111:ffffff;Boca Juniors:0a2a6b:f4c20d;River Plate:ffffff:d4002a;Racing:6cbbe8:ffffff;Independiente:d4002a:ffffff;Real Madrid:ffffff:c9a227;Barcelona:a50044:004d98;Atlético:cb3524:1d3d8f;Sevilla:ffffff:d4002a;Valencia:ffffff:111111;Villarreal:f4d000:004d98;Man City:6cabdd:ffffff;Liverpool:c8102e:ffffff;Arsenal:ef0107:ffffff;Chelsea:034694:ffffff;Man United:da291c:111111;Tottenham:ffffff:132257;Newcastle:111111:ffffff;Bayern:dc052d:0066b2;Dortmund:fde100:111111;Leverkusen:e32221:111111;RB Leipzig:dd0741:ffffff;PSG:004170:da291c;Marseille:2faee0:ffffff;Lyon:ffffff:1a3a8a;Monaco:e3262e:ffffff;Juventus:111111:ffffff;Milan:fb090b:111111;Inter:0068a8:111111;Napoli:12a0d7:ffffff;Roma:8e1f2f:f0bc42;Lazio:87d8f7:ffffff;Atalanta:1e71b8:111111;Benfica:e30613:ffffff;Porto:003893:ffffff;Sporting:00803c:ffffff;Ajax:d2122e:ffffff;PSV:e30613:ffffff;Feyenoord:e30613:111111;Peñarol:f9c800:111111;Nacional:ffffff:1f3a93;Inter Miami:f7b5cd:111111;LAFC:111111:c39e6d;Al-Hilal:0054a6:ffffff;Al-Nassr:f6c800:0a2a6b;Al-Ittihad:f6c800:111111`.split(';').forEach(s=>{const[n,a,b]=s.split(':');KC[n]=[a,b]});
+function crest(n,z=26){const h=hs(n),k=KC[n],A=k?'#'+k[0]:`hsl(${h%360},58%,40%)`,B=k?'#'+k[1]:'#f2f2f2',w=n.replace(/[^A-Za-zÀ-ú ]/g,'').split(' ').filter(Boolean),t=(w.length>1?w[0][0]+w[1][0]:n.slice(0,2)).toUpperCase(),bg=['',`linear-gradient(90deg,${A} 50%,${B} 50%)`,`repeating-linear-gradient(0deg,${A} 0 34%,${B} 34% 50%)`,`linear-gradient(135deg,${A} 55%,${B} 55%)`][h%4]||A;
+return `<i class="cr" style="--z:${z}px;background:${bg}"><b>${t}</b></i>`}
+const FG={AR:'linear-gradient(#74acdf 33%,#fff 33% 66%,#74acdf 66%)',UY:'repeating-linear-gradient(#fff 0 11%,#0038a8 11% 22%)',FR:'linear-gradient(90deg,#0055a4 33%,#fff 33% 66%,#ef4135 66%)',DE:'linear-gradient(#000 33%,#dd0000 33% 66%,#ffce00 66%)',EN:'linear-gradient(#cf142b,#cf142b) center/100% 22% no-repeat,linear-gradient(#cf142b,#cf142b) center/16% 100% no-repeat,#fff',ES:'linear-gradient(#c60b1e 25%,#ffc400 25% 75%,#c60b1e 75%)',IT:'linear-gradient(90deg,#009246 33%,#fff 33% 66%,#ce2b37 66%)',PT:'linear-gradient(90deg,#060 40%,#f00 40%)',NL:'linear-gradient(#ae1c28 33%,#fff 33% 66%,#21468b 66%)'};
+const flag=k=>k=='BR'?'<svg class="fl" viewBox="0 0 20 14"><rect width="20" height="14" fill="#009c3b"/><path d="M10 1.5 18 7l-8 5.5L2 7z" fill="#ffdf00"/><circle cx="10" cy="7" r="3" fill="#002776"/></svg>':`<i class="fl" style="background:${FG[k]||'#555'}"></i>`;
+const val=(o,a)=>Math.round(Math.pow(1.19,o-50)*(a<=23?1.15:a<=28?1:a<=31?.7:.4)*1.2),kv=(a,b)=>`<div class="kv"><span>${a}</span><b>${b}</b></div>`;
+const nmFree=x=>{const h=hs(x[0]+C.age);return x==C.club||h%4?C.num:(C.num+1+h%7)%99+1};
+function offerList(first,age){const cur=C.club,oc=Math.max(4,Math.round((oAt(age)-52)/4));
+let pool=first?CL.filter(x=>x[3]==S.nat&&x[1]<=4):CL.filter(x=>x!=cur&&!LATE.includes(x)&&cstr(x)<=oc&&cstr(x)>=cstr(cur)-1);
+if(!first&&age>=34)pool=pool.concat(LATE.filter(x=>x!=cur),CL.filter(x=>x[3]=='BR'&&x[1]>=5&&x!=cur),C.home&&C.home!=cur?[C.home]:[]);
+const y=()=>C.R()<.5?2:4,op=[];while(op.length<3&&pool.length)op.push([pool.splice(Math.floor(C.R()*pool.length),1)[0],y()]);
+if(cur)op.push([cur,y()]);return op}
+async function apply(o,ex){const[x,n]=o;if(!C.club||x!=C.club){if(C.club)C.mv=1;await pickNum(x)}C.club=x;C.ct=n+ex}
+async function offers(){const op=offerList(1,16),i=await ask(`<h2>Seu primeiro clube</h2><p class="lead">Escolha onde começar a carreira — ${CT[S.nat][0]}.</p><div class="of">${op.map(([x,n],j)=>`<button onclick="go(${j})"><span style="display:flex;gap:10px;align-items:center;color:var(--tx)">${crest(x[0],28)}<b>${x[0]}</b></span><span>${CT[x[3]][3]} · ${n} anos</span></button>`).join('')}</div>`);await apply(op[i],0)}
+const hud=q=>{const{club,tb,row,age,ev,end,win,gk,P}=q,o=row.o,n=tb.length,vl=val(o,age);
+return `<div class="hud"><aside class="cd lc"><h3>${CT[club[3]][3].toUpperCase()}</h3>${tb.map((x,i)=>`<div class="tr2 ${x.me?'me':''} ${i>=n-3?'rl':''}"><span>${i+1}</span>${crest(x.b[0],20)}<b>${x.n}</b><em>${x.p}</em></div>`).join('')}<p class="sm" style="text-align:center;color:#b04040">— REBAIXAMENTO</p><p class="sm" style="text-align:center">Liga · Pts</p></aside>
+<div class="mc"><div class="cd"><div class="ph">${crest(club[0],40)}<div><b>${C.name}</b><br><small>${club[0]}</small></div></div><div class="pr2"><div class="ring" style="--p:${o}%"><span>${o}</span></div><small>GERAL</small><strong>#${C.num}</strong></div>${kv(P[1],flag(S.nat))}${kv('Idade',age)}${kv('Valor',vl+'M')}</div>
+<div class="cd" style="margin-top:14px"><small class="ac">${2010+age}-${String(11+age).slice(-2)}</small>${kv('Jogos',row.gm)}${gk?kv('Sem sofrer gol',row.x):kv('Gols',row.x)+kv('Assistências',row.y)}${kv('Nota',row.rt)}${ev?`<p class="ev">${ev}</p>`:''}${row.tg.length?`<p class="sm">${row.tg.join(' · ')}</p>`:''}</div></div>
+<div class="rc"><div class="rt"><span>${P[1].toUpperCase()}</span><span>IDADE <b class="ac">${age}</b></span><span>VALOR <b>${vl}M</b></span></div>
+<div class="rw"><div class="tl">${C.rows.map(r=>{const t=r.tg.some(x=>x.startsWith('🏆'));return`<div class="ch ${r.age==age?'cur':''} ${t?'tt':''}"><b>${r.age}</b>${crest(r.c,16)}<span>${r.c}</span>${t?'<i>★</i>':''}</div>`}).join('')}</div>
+<div class="wp">${win?`<span class="pill">${win.length-1} CLUBE${win.length>2?'S':''} INTERESSADO${win.length>2?'S':''}</span><h2>JANELA DE TRANSFERÊNCIAS</h2><p class="lead">Os clubes estão de olho. Decida.</p>${win.slice(0,-1).map(([x,m],j)=>`<button class="of2" onclick="go(${j})">${crest(x[0],34)}<div><b>${x[0]}</b><small>${CT[x[3]][3]}</small></div><div class="rg"><b class="ac">${m} ANOS</b><small>Força ${55+cstr(x)*4}</small><em>Nº ${C.num} ${taken(x,C.num)?'OCUPADO':'LIVRE'}</em></div></button>`).join('')}<button class="stay" onclick="go(${win.length-1})">FICAR · ${club[0].toUpperCase()}</button><p class="lead sm">Se ficar, a próxima janela não abre antes de ${2010+age+win.at(-1)[1]+1} — a não ser que o clube caia.</p>`:`<h2>${end?'FIM DE CARREIRA':'TEMPORADA ENCERRADA'}</h2>${end&&!C.over?'<p class="ev">👋 Hora de pendurar as chuteiras.</p>':''}<button class="bt" onclick="go('n')">${end?'VER MINHA CARREIRA':'PRÓXIMA TEMPORADA'}</button>${!end&&age>=33?`<button class="bt g" onclick="go('r')">APOSENTAR AGORA</button>`:''}`}</div></div>
+<div class="mn">${[['trofeus','SALA DE TROFÉUS','Tudo o que você levantou'],['recordes','RECORDES','Suas marcas na carreira'],['selecao','SELEÇÃO','Seu lugar na seleção'],['rival','RIVAL','Seu rival de carreira']].map(([k,a,b])=>`<button onclick="sub('${k}')"><b>${a}</b><small>${b}</small></button>`).join('')}</div></div></div>`};
+function sub(k){const T=C.T,gk=!S.pos,R=C.rows,t={trofeus:'Sala de troféus',recordes:'Recordes',selecao:'Seleção',rival:'Rival'}[k];let b='';
+if(k=='trofeus')b=`<div class="tr">${[['LIGA',T.lg],['CONTINENTAL',T.ct],['COPA',T.cup],['COPA DO MUNDO',T.wc],['BOLA DE OURO',T.bd],['CHUTEIRA',T.gb],['LUVA',T.gg],['REI DA AMÉRICA',T.ra],['MUNDIAL DE CLUBES',T.mc]].map(([a,v])=>`<div><b>${v}</b>${a}</div>`).join('')}</div>`+tbl(R.filter(r=>r.tg.some(x=>/🏆|⚽|👟|🧤/.test(x))),gk);
+if(k=='recordes')b=kv('Jogos na carreira',T.gm)+(gk?kv('Jogos sem sofrer gol',T.cs):kv('Gols na carreira',T.g)+kv('Assistências na carreira',T.a))+kv(gk?'Mais jogos sem sofrer gol numa temporada':'Gols numa temporada',Math.max(...R.map(r=>r.x)))+kv('Melhor nota',Math.max(...R.map(r=>+r.rt)).toFixed(1))+kv('Maior OVR',Math.max(...R.map(r=>r.o)))+kv('Clubes',new Set(R.map(r=>r.c)).size);
+if(k=='selecao')b=kv('Seleção',CT[S.nat][0]+' '+flag(S.nat))+tbl(R.filter(r=>r.tg.some(x=>/Copa do Mundo|Fora da convocação/.test(x))),gk);
+if(k=='rival')b=C.rv?kv('Rival',C.rv.n)+kv('Clube',C.rv.c)+kv('Rivalidade desde',sy(C.rv.s))+kv('Bolas de Ouro do rival',C.rv.bd)+kv('Suas Bolas de Ouro',T.bd):'<p class="sm">Nenhuma rivalidade ainda. Ela pode surgir dos 19 aos 26 anos.</p>';
+app.innerHTML=`<h2>${t}</h2><div class="cd">${b}</div><button class="bt g" onclick="app.innerHTML=C.hud;app.className='w'">← VOLTAR</button>`}
+async function year(){const T=C.T,age=C.age,club=C.club,pi=S.pos,gk=!pi,R=C.R,tg=[],P=POS[pi];let o=oAt(age)+(C.fb||0),ev='',inj=0;C.fb=0;const e=R();
+if(e<.025+(age>30?.015:0)){if(R()<.25||(age>=34&&R()<.4)){C.over=1;ev='💥 Lesão gravíssima: sua carreira termina aqui.'}else{inj=1+(await dec('Você se lesiona. Como vai lidar?',[['VOLTAR ANTES','Volta mais cedo — mas sua fase cai por um tempo.'],['DESCANSAR DIREITO','Perde mais jogos agora, volta mais afiado.']]));ev=inj==1?'🩹 Lesão: você voltou mais cedo, mas ainda sem ritmo.':'🩹 Lesão: você descansou direito e deve voltar mais afiado.';if(inj==1){o-=3;C.fb=-2}else C.fb=2}}
+else if(e<.09){ev='🔥 Fase iluminada: você jogou demais.';o+=3}else if(e<.12){ev='😤 Crise no vestiário: rendimento em queda.';o-=4}
+const cs=cstr(club),gm=Math.round((age<18?8+R()*8:age<20?20+R()*10:o<60?12+R()*8:(30+R()*8)*(age>=36?.8:1))*(C.over?.3:inj==1?.7:inj==2?.35:1));
+const rt=Math.max(5.5,Math.min(9.4,5.9+(o-62)*.045+(R()-.5)*.6)),f=Math.pow(Math.max(o,30)/90,3)*(.75+cs/20)*(1+(S.slots[6]-3)*.03)*(1+(S.slots[7]-3)*.02);
+const ex=r=>{const m=gm*r*f;return Math.max(0,Math.round(m+(R()+R()-1)*Math.sqrt(m+1)*1.5))};
+let gl=ex(GR[pi]),as=ex(AR[pi]),csh=0;
+if(gk){gl=0;as=0;csh=Math.max(0,Math.min(gm,Math.round(gm*(.15+cs*.025+(o-70)*.004)+(R()-.5)*3)))}
+if(age>=18&&!C.over&&R()<.6){const op=CL.filter(x=>x[3]==club[3]&&x!=club),r=await ukick('PÊNALTI!',`${op.length?rd(op)[0]:'Rival'} · ${1+Math.floor(R()*89)}' · ${sy(age)}`,gk);if(gk){if(r){csh++;tg.push('🧤 Pegou pênalti')}}else if(r){gl++;tg.push('Pênalti convertido')}else tg.push('Pênalti perdido')}
+const reg=gm>=18&&!C.over,tb=table(club,cs,o),p=tb.findIndex(x=>x.me)+1,lg=p==1&&reg;let ctw=0,wcw=0;if(p==1&&!reg)tg.push('Campeão como reserva');
+if(lg){T.lg++;tg.push('🏆 Liga');await trophy(CT[club[3]][3],age)}
+if(R()<.08+cs*.015&&reg){T.cup++;tg.push('🏆 Copa');await trophy('Copa',age)}
+const cn=club[2]=='EU'?(cs>=8?'Champions':'Liga Europa'):club[2]=='SA'?(cs>=6?'Libertadores':'Sul-Americana'):club[2]=='AS'?'Champions Ásia':'Concachampions';
+if(p<=8&&reg){const r=await fin(cn,Math.max(.02,Math.min(.45,.03+(cs-6)*.035+(o-78)*.004))*(/Europa|Sul/.test(cn)?1.2:1),0,0,club[2],{Champions:7,'Liga Europa':4,Libertadores:5,'Sul-Americana':3}[cn]||3);if(r>0){ctw=1;T.ct++;tg.push('🏆 '+cn);await trophy(cn,age);if(/^(Champions|Libertadores|Champions Ásia|Concachampions)$/.test(cn)){const r2=await fin('Mundial de Clubes',1,0,1,club[2]=='EU'?'SA':'EU',club[2]=='EU'?5:7);if(r2>0){T.mc++;tg.push('🏆 Mundial de Clubes');await trophy('Mundial de Clubes',age)}else tg.push('Vice Mundial de Clubes')}}else if(!r)tg.push('Vice '+cn)}
+if(age%4==0&&age>=20&&age<=36){const ns=CT[S.nat][2];if(o>=94-ns*1.8&&!C.over){const d=await dec('A seleção pede um compromisso de verdade.',[['ABRAÇAR A SELEÇÃO','Caça a Copa; a fase no clube cai um pouco.'],['PRIORIZAR O CLUBE','Mais afiado no clube, menos peso na Copa.']]);C.fb=d?1:-1;const r=await fin('Copa do Mundo',Math.max(.02,Math.min(.45,.03+(ns-5)*.03+(o-80)*.004+(d?-.04:.05))),1);if(r>0){wcw=1;T.wc++;tg.push('🏆 Copa do Mundo');await trophy('Copa do Mundo',age)}else tg.push(r?'Convocado: Copa do Mundo':'Vice Copa do Mundo')}else tg.push('Fora da convocação')}
+const bs=o+(lg?2:0)+(ctw?5:0)+(wcw?9:0)+(gk?-3:0)+(pi>=6?gl/9:pi>=4?(gl+as)/12:0)+(R()-.5)*4;
+if(bs>=100.5){T.bd++;tg.push('⚽ Bola de Ouro');await aw('BOLA DE OURO',1,age,club)}else if(bs>=93){T.fin++;tg.push('Finalista BO');await aw('BOLA DE OURO',0,age,club)}
+if(pi>=6&&o>=85&&gl>=28+R()*6){T.gb++;tg.push('👟 Chuteira de Ouro');await aw('CHUTEIRA DE OURO',1,age,club)}else if(pi>=6&&gl>=24&&R()<.5)await aw('CHUTEIRA DE OURO',0,age,club);
+if(gk&&o>=85&&csh>=16&&R()<.8){T.gg++;tg.push('🧤 Luva de Ouro');await aw('LUVA DE OURO',1,age,club)}
+if(club[2]=='SA'&&o>=80&&!C.over){const me=(pi>=4?gl+as>=20:p<=3)&&R()<.7;if(me){T.ra++;tg.push('👑 Rei da América')}await aw('REI DA AMÉRICA',me,age,club,1)}
+gl+=C.fg||0;C.fg=0;T.g+=gl;T.a+=as;T.gm+=gm;T.cs+=csh;
+const row={age,c:club[0],mv:C.mv,o:Math.round(o),gm,x:gk?csh:gl,y:gk?'—':as,rt:rt.toFixed(1),p,tg};C.rows.push(row);C.mv=0;const mk=Math.floor((gk?T.cs:T.g)/100);if(mk>C.mk){C.mk=mk;await news(`MARCA: ${mk*100} ${gk?'JOGOS SEM SOFRER GOL':'GOLS'} NA CARREIRA`,age)}await rival(age,club);
+const end=C.over||age>=40||(age>=34&&o<66)||(age>=33&&o<58)||(age>=36&&R()<.12);
+const rel=p>=tb.length-2,win0=!end&&(C.ct-1<=0||rel||((rt>=8.5||rt<6.3)&&R()<.4))?offerList(0,age+1):null,win=win0&&win0.length>1?win0:null;
+C.hud=hud({club,tb,row,age,ev,end,win,gk,P});
+const act=S.fast&&!win?0:await ask(C.hud);
+if(win&&typeof act=='number')await apply(win[act],1);
+return end||act=='r'}
+async function career(){const gk=!S.pos;
+C={cl:{},wb:(()=>{const W=rng(S.seed^0x51ed);let w=0;return Array.from({length:25},()=>w=Math.max(-4,Math.min(4,w+(W()-.5)*2.4)))})(),R:rng(S.seed^0x9e3779b9),age:16,rows:[],T:{g:0,a:0,gm:0,cs:0,lg:0,ct:0,cup:0,wc:0,bd:0,fin:0,gb:0,gg:0,ra:0,mc:0},mk:0,fb:0,fg:0,rv:0,peak:ovr(S.slots,S.pos),ct:0,over:0,mv:0,name:(S.name.trim()||'JOGADOR').toUpperCase(),num:Math.max(1,Math.min(99,Math.round(+S.num)||9))};
+await offers(1);C.home=C.club;
+for(;;){if(await year())break;C.age++;C.ct--}
+final()}
+function final(){const T=C.T,P=POS[S.pos],gk=!S.pos,ti=T.lg+T.ct+T.cup+T.wc+T.mc,pk=Math.max(...C.rows.map(r=>r.o));
+const pts=T.lg*3+T.ct*8+T.cup*1.5+T.wc*14+T.bd*20+T.fin*3+T.gb*5+T.gg*5+T.ra*2+T.mc*6+(gk?T.cs/40:T.g/25+T.a/40)+(pk-70)*1.5;
+C.pts=pts;let tier=0;for(let i=0;i<11;i++)if(pts>=TH[i]&&T.bd>=BDG[i])tier=i;const sc=Math.round(pts);
+try{const b=JSON.parse(localStorage.getItem('fen_best')||'[]');b.push({t:TN[tier],p:P[0],bd:T.bd,ti,s:sc});b.sort((x,y)=>y.s-x.s);localStorage.setItem('fen_best',JSON.stringify(b.slice(0,5)))}catch(e){}
+window.share=()=>{const t=`${C.name} #${C.num} · ${P[1]} · OVR ${pk} · ${T.bd} Bolas de Ouro · ${ti} títulos · ${TN[tier]} (nível ${tier+1}/11)`;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$('#sh').textContent='COPIADO!').catch(()=>prompt('Copie o texto:',t))};
+const stars=1+Math.floor(tier/2.5);
+app.className='';const cp=[];C.rows.forEach(r=>{const l=cp.at(-1);if(l&&l.c==r.c)l.e=r.age;else cp.push({c:r.c,s:r.age,e:r.age})});
+app.innerHTML=`<div class="top"><span>FIM DE CARREIRA · ${P[1]} · ${cp.length} clubes · ${C.rows.length} temporadas</span></div><div class="card" style="animation-delay:0s"><div class="ovr">${pk}</div><div class="ps">${P[0]} · #${C.num} · ${CT[S.nat][0]}</div><div class="nm">${C.name}</div><div class="cs">${SH.map((n,i)=>`<div>${n}<span>${S.slots[i]}</span></div>`).join('')}<div>FINTAS<span class="stt">${st(S.slots[6])}</span></div><div>PERNA RUIM<span class="stt">${st(S.slots[7])}</span></div></div>
+<div class="tr"><div><b>${gk?T.cs:T.g}</b>${gk?'JOGOS SEM GOL':'GOLS'}</div><div><b>${ti}</b>TÍTULOS</div><div><b>${T.bd}</b>BOLA OURO</div></div></div>
+<div class="tier"><div class="stt">${st(stars)}</div><div class="bn">${TN[tier]}</div><small>Nível ${tier+1} de 11 · ${sc} pontos · seed ${S.seed} · ${C.rows.length} temporadas, até os ${C.age} anos${tier<10&&T.bd<BDG[tier+1]&&pts>=TH[tier+1]?' · próximo degrau travado: falta Bola de Ouro':''}</small></div>
+<div class="lad">${TN.map((_,i)=>`<i class="${i<=tier?'on':''}"></i>`).join('')}</div>
+<button class="bt" onclick="start()">JOGAR DE NOVO</button><button class="bt g" id="sh" onclick="share()">COMPARTILHAR</button><button class="bt g" onclick="home()">MUDAR POSIÇÃO</button><h2>Clubes</h2><p class="lead">${cp.map(x=>`${crest(x.c,18)} ${x.c} (${x.s}–${x.e})`).join(' → ')}</p><h2>Sua carreira</h2>${tbl(C.rows,gk)}`}
+home();
+</script></body></html>
